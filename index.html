@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link  href="https://unpkg.com/cropperjs@1.5.12/dist/cropper.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <title>Perfil de Usuario</title>
+</head>
+<body>
+    <main class="container">     
+        <section class="container-form">
+            <form id="updateForm">       
+                <div class="container "></div>
+                    <h1 class="display-5 text-center">Cadastro de Usuário</h1>
+                </div>        
+                <div class="form-group">
+                    <label for="name">Nome:</label>
+                    <input type="text" class="form-control" id="name">
+                </div>
+                <div class="form-group">
+                    <label for="age">Idade:</label>
+                    <input type="number" class="form-control" id="age">
+                </div>
+                <div class="form-group">
+                    <label for="address">Endereço:</label>
+                    <input type="text" class="form-control" id="address">
+                </div>
+                <div class="form-group">
+                    <label for="bio">Biografia:</label>
+                    <textarea class="form-control" id="bio" oninput="autoResize(this)"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="profileImage">Foto de Perfil:</label>
+                    <input type="file" class="form-control-file" id="profileImage" accept="image/*">
+                </div> 
+                <div class="form-group button-group">
+                    <button type="submit" class="btn btn-primary">Cadastrar</button>
+                </div>               
+            </form>
+        </section>
+        
+        <section class="user-info" style="display: none;">
+            <button id="editButton" class="btn btn-primary float-right mr-2 ">Editar Perfil</button>
+            <div>
+                <img src="caminho_para_imagem" alt="Perfil do Usuário" id="userImage">
+                <h1 id="userName">Nome do Usuário</h1>
+            </div>
+            <p id="userAge">Idade: 30</p>
+            <p id="userAddress">Endereço: Rua, Bairro, Estado</p>
+            <p id="userBio">Biografia: Descrição aqui.</p>
+            
+        </section>
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/cropperjs@1.5.12/dist/cropper.js"></script>
+
+    <script src="script.js"></script>
+</body>
+</html>
