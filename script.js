@@ -1,5 +1,51 @@
+// Tamanho automático da área de texto
+function autoResize(textArea) {
+    textArea.style.height = 'auto';  // Reseta a altura
+    textArea.style.height = textArea.scrollHeight + 'px';  // Ajusta a altura baseando-se no conteúdo interno
+}
+
+// Preenche o select de estados
+document.addEventListener("DOMContentLoaded", async () => {
+    const ufSelect = document.getElementById('uf');
+    try {
+        const response = await fetch("https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome");
+        const ufs = await response.json();
+
+        ufs.forEach(uf => {
+            const option = document.createElement("option");
+            option.value = uf.sigla;
+            option.textContent = uf.nome;
+            ufSelect.appendChild(option);
+        });
+
+    } catch (error) {
+        console.error("Erro ao carregar os estados:", error);
+    }
+});
+
+// Preenche o select de cidades
+document.getElementById('uf').addEventListener('change', async (event) => {
+    const citySelect = document.getElementById('city');
+    citySelect.innerHTML = "";
+    try {
+        const uf = event.target.value;
+        const request = await fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/municipios`);
+        const cities = await request.json();
+        cities.forEach(city => {
+            const option = document.createElement('option');
+            option.value = city.nome;
+            option.textContent = city.nome;
+            citySelect.appendChild(option);
+        });
+    } catch (error) {
+        console.error("Erro ao carregar as cidades:", error);
+
+    }
+})
 
 
+
+// Preenche os campos do formulário e envia os dados para outro componente
 document.getElementById('updateForm').addEventListener('submit', function(e) {
     e.preventDefault();
 
@@ -7,16 +53,26 @@ document.getElementById('updateForm').addEventListener('submit', function(e) {
     const age = document.getElementById('age').value;
     const address = document.getElementById('address').value;
     const bio = document.getElementById('bio').value;
+    const uf = document.getElementById('uf').value;
+    const city = document.getElementById('city').value;
+    const district = document.getElementById('district').value;
+
+
 
     document.getElementById('userName').textContent = name;
     document.getElementById('userAge').textContent = `Idade: ${age}`;
     document.getElementById('userAddress').textContent = `Endereço: ${address}`;
+    document.getElementById('userDistrict').textContent = `Endereço: ${address}`;
     document.getElementById('userBio').textContent = `Biografia: ${bio}`;
+    document.getElementById('userUf').textContent = `Estado: ${uf}`;
+    document.getElementById('userCity').textContent = `Cidade: ${city}`;
+    
 
     document.querySelector('.container-form').style.display = 'none';
     document.querySelector('.user-info').style.display = 'block ';
 });
 
+// Exibe o formulário de edição ao clicar no botão de edição
 document.getElementById('editButton').addEventListener('click', function() {
     document.getElementById('name').value = document.getElementById('userName').textContent;
     document.getElementById('age').value = document.getElementById('userAge').textContent.split(": ")[1];
@@ -27,12 +83,27 @@ document.getElementById('editButton').addEventListener('click', function() {
     document.querySelector('.container-form').style.display = 'block';
 });
 
-function autoResize(textArea) {
-    textArea.style.height = 'auto';  // Reseta a altura
-    textArea.style.height = textArea.scrollHeight + 'px';  // Ajusta a altura baseando-se no conteúdo interno
+
+// Função para preencher o select de cidades
+function getCities(event) {
+    const citySelect = document.querySelector("select[id=cidade]");
+    const ufValue = event.target.value;
+    const url = `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${ufValue}/municipios`;
+
+    citySelect.innerHTML = "<option value>Selecione a Cidade</option>";
+    citySelect.disabled = true;
+
+    fetch(url)
+    .then(res => res.json())
+    .then(cities => {
+        for(const city of cities) {
+            citySelect.innerHTML += `<option value="${city.nome}">${city.nome}</option>`
+        }
+        citySelect.disabled = false;
+    })
 }
 
-
+// Adiciona entrada de arquivo para a imagem de perfil e corta a imagem
 let cropper;
 let croppedImage;
 
@@ -65,31 +136,30 @@ document.getElementById('profileImage').addEventListener('change', function(e) {
             modal.style.height = '70vh';
             modal.style.display = 'flex';
             modal.style.flexDirection = 'column';
-            modal.style.justifyContent = 'flex-start';  // Alterado para 'flex-start' para alinhar a imagem e o botão ao topo do modal
+            modal.style.justifyContent = 'flex-start';  
             modal.style.alignItems = 'center';
 
             // Cria uma div para conter a imagem
             let imgContainer = document.createElement('div');
-            imgContainer.style.width = '100%';  // Definido para '100%' para fazer a div ocupar toda a largura do modal
-            imgContainer.style.height = '90%';  // Definido para '80%' para fazer a div ocupar 80% da altura do modal
+            imgContainer.style.width = '100%';  
+            imgContainer.style.height = '90%';  
             modal.appendChild(imgContainer);
 
             // Cria a imagem dentro da div
             let img = document.createElement('img');
             img.id = 'image';
             img.src = e.target.result;
-            img.style.width = '100%';  // Definido para '100%' para fazer a imagem ocupar toda a largura da div
-            img.style.height = '100%';  // Definido para '100%' para fazer a imagem ocupar toda a altura da div
-            img.style.objectFit = 'contain';  // Mantido como 'contain' para garantir que a imagem seja redimensionada mantendo a proporção
-            imgContainer.appendChild(img);  // Adiciona a imagem à div em vez do modal
-
+            img.style.width = '100%';  
+            img.style.height = '100%';  
+            img.style.objectFit = 'contain';  
+            imgContainer.appendChild(img);  
 
             // Cria o botão de cortar
             let cropButton = document.createElement('button');
             cropButton.innerText = 'Cortar';
-            cropButton.style.display = 'block';  // Adicionado para garantir que o botão seja exibido abaixo da imagem
-            cropButton.style.marginTop = '1em';  // Adicionado para adicionar algum espaço acima do botão
-            cropButton.style.height = 'auto';  // Adicionado para permitir que o flexbox gerencie o tamanho do botão
+            cropButton.style.display = 'block';  
+            cropButton.style.marginTop = '1em';  
+            cropButton.style.height = 'auto';  
             cropButton.addEventListener('click', function() {
                 cropper.getCroppedCanvas().toBlob(function(blob) {
                     let croppedImage = blob;
@@ -117,10 +187,12 @@ document.getElementById('profileImage').addEventListener('change', function(e) {
     }
 });
 
-// Quando o formulário for enviado, substitua o arquivo original pelo arquivo cortado
+
+// Substitui o arquivo original pelo arquivo cortado
 document.getElementById('yourForm').addEventListener('submit', function(e) {
     e.preventDefault();
 
     let formData = new FormData();
     formData.append('profileImage', croppedImage);
 });
+

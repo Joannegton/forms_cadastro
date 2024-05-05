@@ -15,29 +15,51 @@
                 <div class="container "></div>
                     <h1 class="display-5 text-center">Cadastro de Usuário</h1>
                 </div>        
-                <div class="form-group">
-                    <label for="name">Nome:</label>
-                    <input type="text" class="form-control" id="name">
+
+                <div class="row">
+                    <div class="col-lg-8 col-sm-12 form-group">
+                        <label for="name">Nome:</label>
+                        <input type="text" class="form-control" id="name" placeholder="Wellington Jhon Silva">
+                    </div>
+                    <div class="col-lg-4 col-sm-12 form-group">
+                        <label for="age">Idade:</label>
+                        <input type="number" class="form-control" id="age" placeholder="21">
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="age">Idade:</label>
-                    <input type="number" class="form-control" id="age">
-                </div>
-                <div class="form-group">
-                    <label for="address">Endereço:</label>
-                    <input type="text" class="form-control" id="address">
-                </div>
+
                 <div class="form-group">
                     <label for="bio">Biografia:</label>
-                    <textarea class="form-control" id="bio" oninput="autoResize(this)"></textarea>
+                    <textarea class="form-control" id="bio" oninput="autoResize(this)" placeholder="Diga-nos sobre você."></textarea>
                 </div>
+
+                <div class="form-group">
+                    <label for="address">Endereço:</label>
+                    <input type="text" class="form-control" id="address" placeholder="Rua dores de campos, 456">
+                </div>
+                <div class="form-group">
+                    <label for="district">Bairro:</label>
+                    <input type="text" class="form-control" id="district" placeholder="Vila industrial">
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 col-12 form-group">
+                        <label for="uf">Estado:</label>
+                        <select class="form-control" id="uf" aria-placeholder="Selecione"></select>
+                    </div>
+                    <div class="col-md-6 col-12 form-group">
+                        <label for="city">Cidade:</label>
+                        <select class="form-control" id="city"></select>
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <label for="profileImage">Foto de Perfil:</label>
                     <input type="file" class="form-control-file" id="profileImage" accept="image/*">
                 </div> 
                 <div class="form-group button-group">
                     <button type="submit" class="btn btn-primary">Cadastrar</button>
-                </div>               
+                </div> 
+                              
             </form>
         </section>
         
@@ -49,8 +71,10 @@
             </div>
             <p id="userAge">Idade: 30</p>
             <p id="userAddress">Endereço: Rua, Bairro, Estado</p>
-            <p id="userBio">Biografia: Descrição aqui.</p>
-            
+            <p id="userDistrict">Bairro</p>
+            <p id="userUf">Estado</p>
+            <p id="userCity">Cidade</p>
+            <p id="userBio">Biografia: Descrição aqui.</p>            
         </section>
     </main>
 
