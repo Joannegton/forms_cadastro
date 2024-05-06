@@ -78,9 +78,9 @@ function updateForm(e) {
 // Função para exibir o formulário de edição ao clicar no botão de edição
 function editForm() {
     document.getElementById('name').value = document.getElementById('userName').textContent;
-    document.getElementById('age').value = document.getElementById('userAge').textContent.split(": ")[1];
-    document.getElementById('address').value = document.getElementById('userAddress').textContent.split(": ")[1];
-    document.getElementById('bio').value = document.getElementById('userBio').textContent.split(": ")[1];
+    document.getElementById('age').value = document.getElementById('userAge').textContent.split(' ')[1];
+    document.getElementById('address').value = document.getElementById('userAddress').textContent;
+    document.getElementById('bio').value = document.getElementById('userBio').textContent;
 
     document.querySelector('.user-info').style.display = 'none';
     document.querySelector('.container-form').style.display = 'block';
