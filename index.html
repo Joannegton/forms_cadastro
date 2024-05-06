@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link  href="https://unpkg.com/cropperjs@1.5.12/dist/cropper.css" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="./assets/styles.css">
     <title>Perfil de Usuario</title>
 </head>
 <body>
-    <main class="container">     
-        <section class="container-form">
+    <main class="container py-4 mx-auto">
+        <section class="container-form bg-light">
             <form id="updateForm">       
                 <div class="container "></div>
                     <h1 class="display-5 text-center">Cadastro de Usuário</h1>
@@ -56,25 +56,39 @@
                     <label for="profileImage">Foto de Perfil:</label>
                     <input type="file" class="form-control-file" id="profileImage" accept="image/*">
                 </div> 
-                <div class="form-group button-group">
+                <div class="form-group button-group text-center mt-4">
                     <button type="submit" class="btn btn-primary">Cadastrar</button>
                 </div> 
                               
             </form>
         </section>
         
-        <section class="user-info" style="display: none;">
-            <button id="editButton" class="btn btn-primary float-right mr-2 ">Editar Perfil</button>
-            <div>
-                <img src="caminho_para_imagem" alt="Perfil do Usuário" id="userImage">
-                <h1 id="userName">Nome do Usuário</h1>
+        <section class="user-info p-4 mb-4 rounded shadow-sm" style="display: none;">
+            <button id="editButton" class="btn btn-primary float mr-2 ">Editar Perfil</button>
+            <div class="row align-items-center justify-content-between mb-3">
+                <div class="col-lg-5 col-sm-12 text-lg-right text-center">
+                    <img src="./assets/img/perfilPadrao.jpg" alt="Perfil do Usuário" id="userImage" class="rounded-circle">
+                </div>
+                <div class="col-lg-7 col-sm-12">
+                    <h1 id="userName"></h1>
+                    <p id="userAge"></p>
+                </div>
             </div>
-            <p id="userAge">Idade: 30</p>
-            <p id="userAddress">Endereço: Rua, Bairro, Estado</p>
-            <p id="userDistrict">Bairro</p>
-            <p id="userUf">Estado</p>
-            <p id="userCity">Cidade</p>
-            <p id="userBio">Biografia: Descrição aqui.</p>            
+
+            <div class="row justify-content-around">
+                <div class="col-lg-7 col-sm-12 card mb-sm-3">
+                    <h5 class="card-title mt-3">Sobre mim</h5>
+                    <p class="card-text text-justify" id="userBio"></p>  
+                </div>
+                <div class="col-lg-4 col-sm-12 card ">
+                    <h5 class="card-title mt-3">Endereço</h5>
+                    <p class="card-text text-justify" id="userAddress"></p>
+                    <p class="card-text text-justify" id="userDistrict"></p>
+                    <p class="card-text text-justify" id="userCity"></p>
+                    <p class="card-text text-justify" id="userUf"></p>
+                </div>
+            </div>               
+            
         </section>
     </main>
 
@@ -83,6 +97,6 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://unpkg.com/cropperjs@1.5.12/dist/cropper.js"></script>
 
-    <script src="script.js"></script>
+    <script src="./assets/script.js"></script>
 </body>
 </html>
