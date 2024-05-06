@@ -65,7 +65,7 @@ document.getElementById('updateForm').addEventListener('submit', (e) => {
 
     document.getElementById('userName').textContent = name;
     document.getElementById('userAge').textContent =  age;
-    document.getElementById('userAddress').textContent = `Rua/Av.: ${address}`;
+    document.getElementById('userAddress').textContent = `${address}`;
     document.getElementById('userDistrict').textContent = `Bairro: ${district}`;
     document.getElementById('userBio').textContent = bio;
     document.getElementById('userCity').textContent = `Cidade: ${city}`;    
