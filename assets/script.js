@@ -4,53 +4,55 @@ function autoResize(textArea) {
     textArea.style.height = textArea.scrollHeight + 'px';  // Ajusta a altura baseando-se no conteúdo interno
 }
 
-// Preenche o select de estados
-document.addEventListener("DOMContentLoaded", async () => {
+// Função para criar e adicionar uma opção a um select
+function appendOption(select, value, text) {
+    const option = document.createElement("option");
+    option.value = value;
+    option.textContent = text;
+    select.appendChild(option);
+}
+
+// Função para buscar os estados
+async function fetchUfs() {
+    const response = await fetch("https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome");
+    return await response.json();
+}
+
+// Função para preencher o select de estados
+async function populateUfSelect() {
     const ufSelect = document.getElementById('uf');
-    const defaultOption = document.createElement("option");
-    defaultOption.value = "";
-    defaultOption.textContent = "Selecione um estado";
-    ufSelect.appendChild(defaultOption);
+    appendOption(ufSelect, "", "Selecione um estado");
+
     try {
-        const response = await fetch("https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome");
-        const ufs = await response.json();
-
-        ufs.forEach(uf => {
-            const option = document.createElement("option");
-            option.value = uf.sigla;
-            option.textContent = uf.nome;
-            ufSelect.appendChild(option);
-        });
-
+        const ufs = await fetchUfs();
+        ufs.forEach(uf => appendOption(ufSelect, uf.sigla, uf.nome));
     } catch (error) {
         console.error("Erro ao carregar os estados:", error);
     }
-});
+}
 
-// Preenche o select de cidades
-document.getElementById('uf').addEventListener('change', async (event) => {
+// Função para buscar as cidades de um estado
+async function fetchCities(uf) {
+    const response = await fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/municipios`);
+    return await response.json();
+}
+
+// Função para preencher o select de cidades
+async function populateCitySelect(event) {
     const citySelect = document.getElementById('city');
     citySelect.innerHTML = "<option value>Selecione a Cidade</option>";
+
     try {
         const uf = event.target.value;
-        const request = await fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${uf}/municipios`);
-        const cities = await request.json();
-        cities.forEach(city => {
-            const option = document.createElement('option');
-            option.value = city.nome;
-            option.textContent = city.nome;
-            citySelect.appendChild(option);
-        });
+        const cities = await fetchCities(uf);
+        cities.forEach(city => appendOption(citySelect, city.nome, city.nome));
     } catch (error) {
         console.error("Erro ao carregar as cidades:", error);
-
     }
-})
+}
 
-
-
-// Preenche os campos do formulário e envia os dados para outro componente
-document.getElementById('updateForm').addEventListener('submit', (e) => {
+// Função para preencher os campos do formulário e enviar os dados para outro componente
+function updateForm(e) {
     e.preventDefault();
 
     const name = document.getElementById('name').value;
@@ -61,10 +63,8 @@ document.getElementById('updateForm').addEventListener('submit', (e) => {
     const city = document.getElementById('city').value;
     const district = document.getElementById('district').value;
 
-
-
     document.getElementById('userName').textContent = name;
-    document.getElementById('userAge').textContent =  age;
+    document.getElementById('userAge').textContent =  `Idade: ${age} anos`;
     document.getElementById('userAddress').textContent = `${address}`;
     document.getElementById('userDistrict').textContent = `Bairro: ${district}`;
     document.getElementById('userBio').textContent = bio;
@@ -73,10 +73,10 @@ document.getElementById('updateForm').addEventListener('submit', (e) => {
 
     document.querySelector('.container-form').style.display = 'none';
     document.querySelector('.user-info').style.display = 'block ';
-});
+}
 
-// Exibe o formulário de edição ao clicar no botão de edição
-document.getElementById('editButton').addEventListener('click', () => {
+// Função para exibir o formulário de edição ao clicar no botão de edição
+function editForm() {
     document.getElementById('name').value = document.getElementById('userName').textContent;
     document.getElementById('age').value = document.getElementById('userAge').textContent.split(": ")[1];
     document.getElementById('address').value = document.getElementById('userAddress').textContent.split(": ")[1];
@@ -84,14 +84,13 @@ document.getElementById('editButton').addEventListener('click', () => {
 
     document.querySelector('.user-info').style.display = 'none';
     document.querySelector('.container-form').style.display = 'block';
-});
+}
 
-
-// Adiciona entrada de arquivo para a imagem de perfil e corta a imagem
+// Função para adicionar entrada de arquivo para a imagem de perfil e cortar a imagem
 let cropper;
 let croppedImage;
 
-document.getElementById('profileImage').addEventListener('change', (e) => {
+function cropImage(e) {
     let file = e.target.files[0];
     if (file) {
         const reader = new FileReader();
@@ -142,8 +141,9 @@ document.getElementById('profileImage').addEventListener('change', (e) => {
             let cropButton = document.createElement('button');
             cropButton.innerText = 'Cortar';
             cropButton.style.display = 'block';  
-            cropButton.style.marginTop = '1em';  
-            cropButton.style.height = 'auto';  
+            cropButton.style.marginTop = '0.6em';  
+            cropButton.style.height = 'auto'; 
+            cropButton.className = 'btn btn-primary'; 
             cropButton.addEventListener('click', () => {
                 cropper.getCroppedCanvas().toBlob((blob) => {
                     let croppedImage = blob;
@@ -159,7 +159,6 @@ document.getElementById('profileImage').addEventListener('change', (e) => {
             });
             modal.appendChild(cropButton);
 
-            // Adiciona o modal ao corpo do documento
             document.body.appendChild(modal);
 
             let cropper = new Cropper(img, {
@@ -169,14 +168,20 @@ document.getElementById('profileImage').addEventListener('change', (e) => {
         };
         reader.readAsDataURL(file);
     }
-});
+}
 
-
-// Substitui o arquivo original pelo arquivo cortado
-document.getElementById('yourForm').addEventListener('submit', (e) => {
+// Função para substituir o arquivo original pelo arquivo cortado
+function submitForm(e) {
     e.preventDefault();
 
     let formData = new FormData();
     formData.append('profileImage', croppedImage);
-});
+}
 
+// Adiciona os event listeners
+document.addEventListener("DOMContentLoaded", populateUfSelect);
+document.getElementById('uf').addEventListener('change', populateCitySelect);
+document.getElementById('updateForm').addEventListener('submit', updateForm);
+document.getElementById('editButton').addEventListener('click', editForm);
+document.getElementById('profileImage').addEventListener('change', cropImage);
+document.getElementById('yourForm').addEventListener('submit', submitForm);

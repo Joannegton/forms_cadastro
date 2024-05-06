@@ -1,9 +1,4 @@
-/* Reset de margens e paddings */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+
 
 body {
     font-family: 'Arial', sans-serif;
@@ -52,7 +47,6 @@ form {
 }
 
 button {
-    background-color: #007bff;
     color: white;
     border: none;
     cursor: pointer;
